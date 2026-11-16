@@ -126,6 +126,8 @@ Arbeitet in **Zweierteams**. Fast alles lässt sich **ohne Dobot und ohne Intern
 
 ## Zusatzaufgabe: Rückkopplung (Schritt zu echter Physical AI)
 
+> **Hinweis:** Im Folgeprojekt [DOBOT-Lernender-Greifer-KI-expert](https://github.com/ThorstenSmit/DOBOT-Lernender-Greifer-KI-expert) ist diese Rückkopplung **Pflicht**, denn der Roboter bewertet damit seine Versuche. Wer dieses Projekt später fortsetzen will, sollte sie hier umsetzen.
+
 Bisher ist die Kette **offen**: Trigger → Entscheidung → Job, und danach nimmt das Programm einfach an, dass alles geklappt hat. Ein Roboter in der echten Welt darf das nicht. Der Saugnapf kann den Stein verfehlen, ihn unterwegs verlieren oder er rutscht. Ein **geschlossener Regelkreis** prüft das Ergebnis und reagiert. Das ist der wichtigste Schritt von „KI-gestützter Robotik“ zu **Physical AI** (siehe [README](README.md), Abschnitt „Einordnung“).
 
 **Aufgabe (Szenario A):** Nach dem Job prüft die Kamera, ob der Stein **wirklich im richtigen Fach liegt**. Wenn nicht, wird der Job wiederholt, aber höchstens **zweimal**, danach bricht das Programm mit einer klaren Meldung ab.

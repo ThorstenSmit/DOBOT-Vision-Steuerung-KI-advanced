@@ -26,7 +26,7 @@ Es ist eine **Sense-Think-Act-Pipeline mit KI als Entscheider**. Was ihr dabei l
 **Was zu echter Physical AI noch fehlt** (mögliche Erweiterungen):
 1. **Rückkopplung:** Nach dem Ablegen prüft die Kamera, ob der Stein im Fach liegt, und wiederholt den Job bei Misserfolg.
 2. **Mehrschrittige Planung:** Die KI entscheidet nach jedem Schritt neu („Sortiere alle Steine“).
-3. **Eigenes Lernen:** Mit selbst gesammelten Bildern ein kleines Modell trainieren und mit der Cloud-KI vergleichen.
+3. **Eigenes Lernen:** Der Roboter lernt aus eigener Erfahrung, besser zu greifen (umgesetzt im Folgeprojekt unten). Oder: Mit selbst gesammelten Bildern ein kleines Modell trainieren und mit der Cloud-KI vergleichen.
 4. **Sichtgeführte Bewegung:** Die Kamera korrigiert die Position während der Fahrt.
 
 ## Dieses Projekt baut auf zwei anderen auf
