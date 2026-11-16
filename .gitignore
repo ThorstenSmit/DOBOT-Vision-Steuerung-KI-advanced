@@ -1,0 +1,11 @@
+# Nur für die Lehrkraft
+LEHRER.md
+LEHRERREADME.md
+loesung/
+
+# API-Schlüssel nie einchecken
+.env
+
+# Lokale Kamera-Aufnahmen und Kalibrierung
+aufnahmen/
+kalibrierung.json
