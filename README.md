@@ -35,6 +35,9 @@ Es ist eine **Sense-Think-Act-Pipeline mit KI als Entscheider**. Was ihr dabei l
 
 Beide müssen erledigt sein und im **selben Clone-Ordner** liegen.
 
+## Wie es weitergeht
+Nach diesem Projekt folgt [DOBOT-Lernender-Greifer-KI-expert](https://github.com/ThorstenSmit/DOBOT-Lernender-Greifer-KI-expert): Der Roboter lernt durch eigene Versuche, besser zu greifen, und bewertet seine Fortschritte mit Statistik. Es nutzt die **Rückkopplung** aus diesem Projekt (Zusatzaufgabe) als Erfolgsmessung. Wer es später bearbeiten will, sollte sie hier umsetzen.
+
 ## Los geht's
 1. **[PROJEKT.md](PROJEKT.md)** lesen: Szenarien, Zeitplan (6 Stunden in 3 Wochen), Aufgaben, Abnahme, Bewertung.
 2. **[starter/README.md](starter/README.md)** folgen: Starter-Dateien in den Clone kopieren, Pakete installieren, Schlüssel und Bildmodell setzen.
