@@ -43,6 +43,7 @@ python ueberwachung.py --szenario tasten --quelle testvideo.avi --mock --ohne-ro
 | `kalibrieren.py` | Werkzeug zum Kalibrieren (Klicken, Eingeben) | Stunde 4 ausführen |
 | `objekt.py` | Schwerpunkt eines Objekts finden | **Stunde 4** |
 | `jobs.py` | Befehle planen, validieren, ausführen | **Stunde 5** |
+| `rueckkopplung.py` | Ergebnis prüfen und begrenzt wiederholen (Regelkreis) | **Zusatzaufgabe** |
 | `check_kamera.py` | Kameratest mit Livebild | Stunde 1 |
 | `test_*.py` | Tests (je 1 bis 2 vorgegeben) | immer **zuerst** ergänzen |
 

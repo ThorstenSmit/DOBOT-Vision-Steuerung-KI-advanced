@@ -124,8 +124,25 @@ Arbeitet in **Zweierteams**. Fast alles lässt sich **ohne Dobot und ohne Intern
 
 ---
 
+## Zusatzaufgabe: Rückkopplung (Schritt zu echter Physical AI)
+
+Bisher ist die Kette **offen**: Trigger → Entscheidung → Job, und danach nimmt das Programm einfach an, dass alles geklappt hat. Ein Roboter in der echten Welt darf das nicht. Der Saugnapf kann den Stein verfehlen, ihn unterwegs verlieren oder er rutscht. Ein **geschlossener Regelkreis** prüft das Ergebnis und reagiert. Das ist der wichtigste Schritt von „KI-gestützter Robotik“ zu **Physical AI** (siehe [README](README.md), Abschnitt „Einordnung“).
+
+**Aufgabe (Szenario A):** Nach dem Job prüft die Kamera, ob der Stein **wirklich im richtigen Fach liegt**. Wenn nicht, wird der Job wiederholt, aber höchstens **zweimal**, danach bricht das Programm mit einer klaren Meldung ab.
+
+1. **Soll-Zustand festlegen:** Wo (in Pixeln) liegt das Fach? Die Fachposition steht in Millimetern in `konfig.FAECHER`. Mit der **inversen Kalibriermatrix** (`np.linalg.inv(matrix)`, dann `cv2.perspectiveTransform`) rechnet ihr sie in Bildpixel um.
+2. **Ergebnis prüfen:** Im Starter liegt das Gerüst `rueckkopplung.py`. Implementiert `fach_pixel()` (Millimeter in Pixel, mit der inversen Matrix) und `pruefe_ergebnis(bild, hintergrund, fach_xy, matrix, alt_px)`. Vor dem Prüfen muss der **Arm aus dem Bild** sein (Home-Position). Vergleicht den Fach-Ausschnitt mit dem Hintergrund (wie im Trigger) und prüft zusätzlich, dass **am alten Ort kein Stein mehr liegt** (`alt_px`).
+3. **Regelkreis bauen:** Implementiert `fuehre_mit_rueckkopplung()` (Schleife mit Zähler, höchstens 2 Wiederholungen) und bindet sie in `ueberwachung.py` ein: Job ausführen → **frisches** Bild (Webcams liefern anfangs veraltete Bilder, also einige Bilder verwerfen) → `pruefe_ergebnis()` → bei Misserfolg neu planen und wiederholen, danach Abbruch mit Meldung. **Jeder Wiederholungsjob läuft wieder durch die vollständige Validierung. Ein Fehler der Validierung wird nie „einfach nochmal versucht“.**
+4. **Tests zuerst** (`python -m pytest -v test_rueckkopplung.py`, ohne Roboter, mit synthetischen Bildern; zwei sind vorgegeben): Stein im Fach → `True`. Fach leer → `False`. Stein noch am alten Ort → `False`. Stein im falschen Fach → `False`. Erfolg im 2. Versuch. Sicherheitsfehler werden nicht wiederholt.
+5. **Fehlerfälle zeigen:** Nehmt dem Saugnapf die Wirkung (Schlauch kurz abziehen) oder legt den Stein von Hand zurück, und zeigt, dass das Programm es merkt, wiederholt und nach dem zweiten Misserfolg sauber abbricht.
+
+**Fragen:** Was ist der Unterschied zwischen *Steuerung* und *Regelung*? Warum braucht man ein Wiederholungslimit? Welche Fehler erkennt die Kamera nicht (z. B. Stein liegt schief im Fach)? Wie viel Vertrauen verdient die Prüfung selbst?
+
+**Hinweis für Szenario B:** Prüft statt des Fachs, ob der Taster gedrückt wurde. Das geht nur mit einer Rückmeldung (z. B. eine LED am Taster, die die Kamera sieht).
+
 ## Erweiterungen (für Schnelle)
 - **Beide Szenarien** in einem Programm, je nach Bild.
+- **Weitere Schritte zu Physical AI:** mehrschrittige Planung („Sortiere alle Steine“), eigenes kleines Modell mit selbst gesammelten Bildern trainieren und mit der Cloud-KI vergleichen, Sichtführung während der Fahrt.
 - **Qualitätskontrolle:** KI unterscheidet „gut“ und „schlecht“ (z. B. heile und defekte Teile) und sortiert in zwei Fächer.
 - **Mehrere Steine nacheinander** abarbeiten.
 - **Protokoll** aller Entscheidungen (Zeit, Bild, KI-Antwort, Job, Ergebnis) als Datei mit Bildern.
@@ -140,6 +157,7 @@ Arbeitet in **Zweierteams**. Fast alles lässt sich **ohne Dobot und ohne Intern
 | Robustheit | Alle Fälle der Abnahme-Challenge sind abgefangen |
 | Bedienbarkeit | Status sichtbar, verständliche Meldungen, Bestätigung, Abbruch (LF 10a) |
 | Genauigkeit | Kalibrierfehler unter 5 mm, dokumentiert |
+| Zusatz: Rückkopplung | Ergebnis wird geprüft, Wiederholungslimit, Tests vorhanden |
 | Code-Qualität | Aufgeteilt in Module, lesbar, kommentiert, Wiederverwendung des Sprachprojekts |
 | Geheimnisse und Daten | Kein API-Key im Repository, Kamera ohne Gesichter |
 | Dokumentation | Prompt-Entwicklung, Entscheidungen (Grenzen, Schwellen) und Messwerte dokumentiert |
