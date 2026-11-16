@@ -25,6 +25,7 @@ Alles lässt sich mit **Tests**, einem **Testbild/Video** und der Mock-Bild-KI e
 python -m pytest -v                       # Tests (zu Beginn rot, das ist gewollt)
 python ueberwachung.py --szenario tasten --quelle testvideo.avi --mock --ohne-roboter
 ```
+Zusatzaufgabe Rückkopplung (echter Roboter, Szenario A): `python ueberwachung.py --szenario sortieren --rueckkopplung`.
 `--quelle` akzeptiert eine Kameranummer, ein Bild oder ein Video.
 
 ## 3. Die Dateien

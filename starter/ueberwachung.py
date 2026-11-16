@@ -8,6 +8,10 @@ Start (Beispiele):
 Beenden: Taste q im Bildfenster oder Strg+C. Standardmäßig fragt das Programm vor JEDEM
 Job nach einer Bestätigung (j/N). Nur mit --auto läuft es ohne Rückfrage.
 
+ZUSATZAUFGABE Rückkopplung: Mit --rueckkopplung (nur Szenario A, echter Roboter) wird nach
+dem Job geprüft, ob der Stein im Fach liegt, und bei Misserfolg höchstens 2x wiederholt.
+Dafür regelkreis() ausfüllen (Gerüst unten) und rueckkopplung.py implementieren.
+
 STUNDE 2 (LF 10a): Bedienoberfläche verbessern (Statusanzeige im Bild, verständliche Meldungen).
 STUNDE 6 (LF 10a): Integration, Bestätigung und Notaus-Bedienung.
 """
@@ -27,6 +31,7 @@ from ki_client import KIFehler
 from mock_vision import frage_mock_vision
 from objekt import finde_schwerpunkt
 from prompts import PROMPTS
+from rueckkopplung import fuehre_mit_rueckkopplung, pruefe_ergebnis  # noqa: F401  (Zusatzaufgabe)
 from trigger import Trigger
 from vision_client import frage_vision
 
@@ -40,6 +45,30 @@ def baue_job(szenario, entscheidung, bild, hintergrund, matrix):
     x, y = kalibrierung.pixel_zu_mm(matrix, *schwerpunkt)
     print(f"Objekt bei Pixel {schwerpunkt[0]:.0f},{schwerpunkt[1]:.0f}  ->  x={x:.0f} y={y:.0f} mm")
     return job_sortieren(entscheidung["farbe"], (x, y))
+
+
+def frisches_bild(kamera, verwerfen=5):
+    """Puffer leeren: Webcams liefern sonst ein veraltetes Bild (vor dem Job)."""
+    time.sleep(1.0)
+    bild = None
+    for _ in range(verwerfen):
+        bild = kamera.bild()
+    return bild
+
+
+def regelkreis(kamera, device, entscheidung, hintergrund, matrix) -> bool:
+    """ZUSATZAUFGABE: Job ausführen, Ergebnis per Kamera prüfen, bei Misserfolg wiederholen.
+
+    TODO:
+      1. versuch(): frisches_bild(kamera) -> finde_schwerpunkt() -> pixel_zu_mm() ->
+         job_sortieren() -> fuehre_job(device, job). Den Ort des Steins beim ERSTEN Versuch
+         als alt_px merken. Findest du den Stein nicht mehr: JobFehler.
+      2. pruefen(): pruefe_ergebnis(frisches_bild(kamera), hintergrund,
+         konfig.FAECHER[farbe], matrix, alt_px)
+      3. return fuehre_mit_rueckkopplung(versuch, pruefen, max_wiederholungen=2)
+    Jeder Versuch plant neu und läuft durch die volle Validierung (fuehre_job).
+    """
+    raise NotImplementedError("Zusatzaufgabe")
 
 
 def zeichne_status(bild, text):
@@ -56,6 +85,8 @@ def main():
     p.add_argument("--mock", action="store_true", help="Mock-Bild-KI statt Cloud")
     p.add_argument("--ohne-roboter", action="store_true", help="Jobs nur simulieren")
     p.add_argument("--auto", action="store_true", help="ohne Rückfrage ausführen (Vorsicht!)")
+    p.add_argument("--rueckkopplung", action="store_true",
+                   help="Zusatzaufgabe: Ergebnis prüfen und wiederholen (Szenario A, mit Roboter)")
     p.add_argument("--zeige", action="store_true", help="Livebild in einem Fenster zeigen")
     args = p.parse_args()
 
@@ -111,6 +142,10 @@ def main():
                 fuehre_job(None, job, vorschau=True)
                 if not args.auto and input("Ausführen? [j/N] ").strip().lower() != "j":
                     print("Abgebrochen.")
+                elif args.rueckkopplung and args.szenario == "sortieren" and device is not None:
+                    ok = regelkreis(kamera, device, entscheidung, hintergrund, matrix)
+                    print("Job fertig und geprüft." if ok else
+                          "FEHLER: Stein liegt nicht im Fach. Nach allen Versuchen abgebrochen.")
                 else:
                     fuehre_job(device, job)
                     print("Job fertig.")
