@@ -38,6 +38,8 @@ Beide müssen erledigt sein und im **selben Clone-Ordner** liegen.
 ## Wie es weitergeht
 Nach diesem Projekt folgt [DOBOT-Lernender-Greifer-KI-expert](https://github.com/ThorstenSmit/DOBOT-Lernender-Greifer-KI-expert): Der Roboter lernt durch eigene Versuche, besser zu greifen, und bewertet seine Fortschritte mit Statistik. Es nutzt die **Rückkopplung** aus diesem Projekt (Zusatzaufgabe) als Erfolgsmessung. Wer es später bearbeiten will, sollte sie hier umsetzen.
 
+**Kein Dobot an der Schule?** Eine verwandte Variante mit Webcam und KI, aber mit Simulation oder Siemens-SPS statt Roboterarm: [PhysicalAI-Sortierweiche-Webcam-basic](https://github.com/ThorstenSmit/PhysicalAI-Sortierweiche-Webcam-basic).
+
 ## Los geht's
 1. **[PROJEKT.md](PROJEKT.md)** lesen: Szenarien, Zeitplan (6 Stunden in 3 Wochen), Aufgaben, Abnahme, Bewertung.
 2. **[starter/README.md](starter/README.md)** folgen: Starter-Dateien in den Clone kopieren, Pakete installieren, Schlüssel und Bildmodell setzen.
